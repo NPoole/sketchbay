@@ -286,10 +286,10 @@ sketchContent += '// Here is your sketch!' + '\n\n' + '/* if there are any requi
 	if(chanArray.indexOf(chan) == -1){ // if channel hasn't been addressed 
 	chanArray += chan; //add channel to the list
 	sketchContent += '// Global Channel ' + chan + '\n';
-	sketchContent += 'int chan' + chan + ' = 0;' + '\n';}
+	sketchContent += 'int chan' + chan + ' = 0;' + '\n\n';}
 
 	if(moduleName == 'traverse' || moduleName == 'oneshot'){
-	sketchContent += 'Servo servo' + m + '; // declare servo for module ' + m + '\n';
+	sketchContent += 'Servo servo' + m + '; // declare servo for ' + moduleName + ' (unit ' + m + ')' + '\n\n';
 	}
 
 }}
