@@ -16,7 +16,7 @@
 	onClick="alert('About Sketchbay\n------------------------\nSketchbay is the illest.\nSketchbay is never wack.\nSketchbay is always dope.\n2016 Nick Poole')"><img src="./Resources/Logo.png"></a></span>
 	<div class="taskbar">
 	<span title="Translate into code"><A HREF="javascript:generate()">Generate</A></span>&nbsp;&nbsp;&nbsp;&nbsp;
-	<span title="Save your code"><A HREF="">Save</A></span>&nbsp;&nbsp;&nbsp;&nbsp;
+	<span title="Save your code"><A HREF="javascript:saveSketch()">Save</A></span>&nbsp;&nbsp;&nbsp;&nbsp;
 	<span title="Start a new sketch"><A HREF="javascript:history.go(0)">New</A></span>
 	</div>
 
@@ -297,6 +297,11 @@ sketchContent += '// Here is your sketch!' + '\n\n' + '/* if there are any requi
 	sketchContent += 'Servo servo' + m + '; // declare servo for ' + moduleName + ' (unit ' + m + ')' + '\n\n';
 	}
 
+	if(moduleName == 'latchky' || moduleName == 'momento' || moduleName == 'blink3r'){
+	sketchContent += '// ' + moduleName + ' globals (unit ' + m + ')' + '\n';
+	sketchContent += 'boolean ' + moduleName + m + 'State = 0;' + '\n\n';
+	}
+
 }}
 
 //Now we must write the setup routine
@@ -359,6 +364,34 @@ sketchContent += '\n' + '}' + '\n';
 
 document.getElementById('sketch').value = sketchContent;
 
+}
+
+function saveSketch()
+{
+    var textToWrite = document.getElementById('sketch').value;
+    var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+    var fileNameToSaveAs = 'SketchBay.ino';
+
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    if (window.webkitURL != null)
+    {
+        // Chrome allows the link to be clicked
+        // without actually adding it to the DOM.
+        downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+    }
+    else
+    {
+        // Firefox requires the link to be added to the DOM
+        // before it can be clicked.
+        downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+        downloadLink.onclick = destroyClickedElement;
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+    }
+
+    downloadLink.click();
 }
 
 </script>
