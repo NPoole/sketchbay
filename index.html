@@ -32,9 +32,9 @@
 		<span title="Add an LED fade effect">
 		<img id="fad3d" class="ico" draggable="true" src="./Resources/faded_ico.png">
 		</span>
-		<span title="Add an LED chase effect">
+		<!--<span title="Add an LED chase effect">
 		<img id="chas3r" class="ico" draggable="true" src="./Resources/chaser_ico.png">
-		</span>
+		</span>-->
 		<span title="Add an LED blink effect">
 		<img id="blink3r" class="ico" draggable="true" src="./Resources/blinker_ico.png">
 		</span>
@@ -48,7 +48,7 @@
 		<span title="Control a servo">
 		<img id="oneshot" class="ico" draggable="true" src="./Resources/oneshot_ico.png">
 		</span>
-	    <div class="containerLabel">Sounds</div>
+	    <!--<div class="containerLabel">Sounds</div>
 		<span title="Add explodey sounds">		
 		<img id="boom" class="ico" draggable="true" src="./Resources/boom_ico.png">
 		</span>
@@ -64,7 +64,7 @@
 		</span>
 		<span title="Demultiplex (combine) a channel">
 		<img id="fourears" class="ico" draggable="true" src="./Resources/fourears_ico.png">
-		</span>
+		</span>-->
 	</div>
 
 <div id="canvas" class="canvas blackScroll"><div class="spacer">[Drop A New Module Here]</div></div>
@@ -145,8 +145,8 @@ function handleDrop(e) {
     }
 
     if (dragSrc.id == 'indic8r') {
-      newModule.innerHTML = '<img draggable="false" class="moduleSizeA" src="./Resources/indicate.png">';
-      newModule.className = '';
+      newModule.innerHTML = indik8r;
+      newModule.className = "indik8r moduleSizeA";
       var d = document.getElementById('canvas').appendChild(newModule);
     }
 
@@ -253,6 +253,8 @@ var traverse = '<div class="taskIcons"><img onclick="javascript:halp()" src="./R
 
 var oneshot = '<div class="taskIcons"><img onclick="javascript:halp()" src="./Resources/halp.png">&nbsp;&nbsp;<img onclick="javascript:closeDiv(this.parentNode.parentNode)" src="./Resources/kill.png"></div><span title="Control Channel"><input class="numberField inchan" type="number" min="0" max="255" step="1" value="0" id="channel" name="channel"><input class="numberFieldBG inchan" type="number" min="0" max="255" step="1" value="88"></span><span title="LED Pin"><input type="text" name="ledPin" id="pin" class="textField pin"><input type="text" class="textFieldBG pin" value="~~"></span><span title="Servo Limits"><input id="limit1" type="range" value="0" min="0" max="180" step="1" class="limit1"><input id="limit2" type="range" value="180" min="0" max="180" step="1" class="limit2"></span><div class="servoLabels"> 0|---------|---------|180 </div><div class="labels orng">&nbsp;&nbsp;led pin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; input channel &nbsp;&nbsp;&nbsp;&nbsp; servo limits</div>' 
 
+var indik8r = '<div class="taskIcons"><img onclick="javascript:halp()" src="./Resources/halp.png">&nbsp;&nbsp;<img onclick="javascript:closeDiv(this.parentNode.parentNode)" src="./Resources/kill.png"></div><span title="Control Channel"><input class="numberField inchan" type="number" min="0" max="255" step="1" value="0" id="channel" name="channel"><input class="numberFieldBG inchan" type="number" min="0" max="255" step="1" value="88"></span><span title="Switch Pin"><input type="text" name="switchPin" id="pin" class="textField pin"><input type="text" class="textFieldBG pin" value="~~"></span><span title="Default Switch Position"><input type="radio" name="normalOn" id="rad" class="radioB nOn"><div class="radioLabels">ON&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OFF</div><input type="radio" name="normalOn" class="radioB nOff"></span><div class="labels">switch pin &nbsp;&nbsp;&nbsp;&nbsp; input channel &nbsp;&nbsp;&nbsp;&nbsp; start position</div>'
+
 function closeDiv(deadman) {
 deadman.parentNode.removeChild(deadman);
 }
@@ -283,6 +285,7 @@ sketchContent += '// Here is your sketch!' + '\n\n' + '/* if there are any requi
 
 	if(chanArray.indexOf(chan) == -1){ // if channel hasn't been addressed 
 	chanArray += chan; //add channel to the list
+	sketchContent += '// Global Channel ' + chan + '\n';
 	sketchContent += 'int chan' + chan + ' = 0;' + '\n';}
 
 	if(moduleName == 'traverse' || moduleName == 'oneshot'){
@@ -301,9 +304,9 @@ sketchContent += '\n\n' + 'void setup() {' + '\n\n';
         moduleName = document.getElementById("module"+m).className;
 	moduleName = moduleName.substr(0,moduleName.indexOf(' '));
 
-	//For debug only
-	//sketchContent += '//module name: ' + moduleName + '\n';
-	//END DEBUG
+	
+	sketchContent += '\n' + '// ' + moduleName + ' setup (unit ' + m + ')' + '\n';
+	
 
 	if(moduleName == 'latchky' || moduleName == 'momento'){
 		var pin = document.getElementById("pin_"+m).value;
@@ -343,7 +346,7 @@ sketchContent += '\n' + '}' + '\n';
     if(document.getElementById("module"+m)){
         moduleName = document.getElementById("module"+m).className;
 	moduleName = moduleName.substr(0,moduleName.indexOf(' '));
-	sketchContent += '\n\n' + 'void ' + moduleName + m +'(){ // "' + moduleName +'" routine' + '\n';
+	sketchContent += '\n\n' + 'void ' + moduleName + m +'(){ // "' + moduleName +'" routine (unit ' + m + ')' + '\n';
 
 	//module agnostic placeholder
 	sketchContent += '\n\n\n' + '}' + '\n';

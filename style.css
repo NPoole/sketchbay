@@ -223,6 +223,14 @@ a {
   width: 470px;
 }
 
+.indik8r {
+  position: relative;
+  background-image: url("./Resources/indicate.png");
+  background-color: white;
+  height: 130px;
+  width: 470px;
+}
+
 .numberField {
    background-color: #000;
    height: 30px;
