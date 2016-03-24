@@ -277,9 +277,9 @@ chanArray = '';
 
 //First, write header boilerplate and channel globals
 
-sketchContent += '// Here is your sketch!' + '\n\n' + '/* if there are any required libraries or other boilerplate, they will live here. */' + '\n\n';
+sketchContent += '// Here is your sketch!\n\n/* if there are any required libraries or other boilerplate, they will live here. */\n\n';
 
- for(m = 0; m <= modIDN; m++){
+for(m = 0; m <= modIDN; m++){
 
     if(document.getElementById("module"+m)){
 
@@ -291,75 +291,106 @@ sketchContent += '// Here is your sketch!' + '\n\n' + '/* if there are any requi
 	if(chanArray.indexOf(chan) == -1){ // if channel hasn't been addressed 
 	chanArray += chan; //add channel to the list
 	sketchContent += '// global channel ' + chan + '\n';
-	sketchContent += 'int chan' + chan + ' = 0;' + '\n\n';}
+	sketchContent += 'int chan' + chan + ' = 0;\n\n';}
 
 	if(moduleName == 'traverse' || moduleName == 'oneshot'){
-	sketchContent += 'Servo servo' + m + '; // declare servo for ' + moduleName + ' (unit ' + m + ')' + '\n\n';
+	sketchContent += 'Servo servo' + m + '; // declare servo for ' + moduleName + ' (unit ' + m + ')\n\n';
 	}
 
 	if(moduleName == 'latchky' || moduleName == 'momento' || moduleName == 'blink3r'){
-	sketchContent += '// ' + moduleName + ' globals (unit ' + m + ')' + '\n';
-	sketchContent += 'boolean ' + moduleName + m + 'State = 0;' + '\n\n';
+	sketchContent += '// ' + moduleName + ' globals (unit ' + m + ')\n';
+	sketchContent += 'boolean ' + moduleName + m + 'State = 0;\n\n';
 	}
 
 }}
 
 //Now we must write the setup routine
 
-sketchContent += '\n\n' + 'void setup() {' + '\n\n';
+sketchContent += '\n\nvoid setup() {\n\n';
 
- for(m = 0; m <= modIDN; m++){
+for(m = 0; m <= modIDN; m++){
     if(document.getElementById("module"+m)){
 
         moduleName = document.getElementById("module"+m).className;
 	moduleName = moduleName.substr(0,moduleName.indexOf(' '));
 
 	
-	sketchContent += '\n' + '// ' + moduleName + ' setup (unit ' + m + ')' + '\n';
+	sketchContent += '\n// ' + moduleName + ' setup (unit ' + m + ')\n';
 	
 
 	if(moduleName == 'latchky' || moduleName == 'momento'){
 		var pin = document.getElementById("pin_"+m).value;
-	 	sketchContent += 'pinMode(' + pin + ', INPUT); // set input' + '\n';
-	 	sketchContent += 'digitalWrite(' + pin + ', 1); // set pullup' + '\n';		
+	 	sketchContent += 'pinMode(' + pin + ', INPUT); // set input \n';
+	 	sketchContent += 'digitalWrite(' + pin + ', 1); // set pullup \n';		
 		}
 	if(moduleName == 'fad3d' || moduleName == 'chaser' || moduleName == 'blink3r' || moduleName == 'indik8r'){
 		var pin = document.getElementById("pin_"+m).value;
-		sketchContent += 'pinMode(' + pin + ', OUTPUT); // set output' + '\n';
-		sketchContent += 'digitalWrite(' + pin + ', 0); // turn off' + '\n';
+		sketchContent += 'pinMode(' + pin + ', OUTPUT); // set output \n';
+		sketchContent += 'digitalWrite(' + pin + ', 0); // turn off \n';
 		}
 	if(moduleName == 'traverse' || moduleName == 'oneshot'){
 		var pin = document.getElementById("pin_"+m).value;
-		sketchContent += 'servo' + m + '.attach(' + pin + '); // attach servo' + '\n';
+		sketchContent += 'servo' + m + '.attach(' + pin + '); // attach servo\n';
 		}
 	
 }}
 
-sketchContent += '\n' + '}' + '\n'; //close the setup routine
+sketchContent += '\n} \n'; //close the setup routine
 
 //Now, the loop!
 
-sketchContent += '\n\n' + 'void loop() {' + '\n\n';
+sketchContent += '\n\nvoid loop() { \n\n';
 
- for(m = 0; m <= modIDN; m++){
+for(m = 0; m <= modIDN; m++){
     if(document.getElementById("module"+m)){
         moduleName = document.getElementById("module"+m).className;
 	moduleName = moduleName.substr(0,moduleName.indexOf(' '));
-	sketchContent += moduleName + m + '(); // call the "' + moduleName + m + '" routine' + '\n';
+	sketchContent += moduleName + m + '(); // call the "' + moduleName + m + '" routine \n';
 }}
 
-sketchContent += '\n' + '}' + '\n';
+sketchContent += '\n} \n';
     
 //Finally, the meat! (module routines)
 
- for(m = 0; m <= modIDN; m++){
+for(m = 0; m <= modIDN; m++){
     if(document.getElementById("module"+m)){
         moduleName = document.getElementById("module"+m).className;
 	moduleName = moduleName.substr(0,moduleName.indexOf(' '));
-	sketchContent += '\n\n' + 'void ' + moduleName + m +'(){ // "' + moduleName +'" routine (unit ' + m + ')' + '\n';
+	sketchContent += '\n\n' + 'void ' + moduleName + m +'(){ // "' + moduleName +'" routine (unit ' + m + ')\n\n';
 
-	//module agnostic placeholder
-	sketchContent += '\n\n\n' + '}' + '\n';
+	if(moduleName == 'latchky'){
+		var pin = document.getElementById("pin_"+m).value;
+		sketchContent += 'if(!digitalRead(' + pin + ') {';
+		sketchContent += '';
+		sketchContent += '}\n';
+	} 
+
+	if(moduleName == 'momento'){
+		sketchContent += '// "momento" stuff';
+	} 
+
+	if(moduleName == 'blink3r'){
+		sketchContent += '// "blink3r" stuff';
+	} 
+
+	if(moduleName == 'fad3d'){
+		sketchContent += '// "fad3d" stuff';
+	} 
+
+	if(moduleName == 'indik8r'){
+		sketchContent += '// "indik8r" stuff';
+	} 
+
+	if(moduleName == 'traverse'){
+		sketchContent += '// "traverse" stuff';
+	} 
+
+	if(moduleName == 'oneshot'){
+		sketchContent += '// "oneshot" stuff';
+	} 
+
+	//close up the routine
+	sketchContent += '\n\n' + '}' + '\n';
 }}
 
 document.getElementById('sketch').value = sketchContent;
@@ -392,6 +423,7 @@ function saveSketch()
     }
 
     downloadLink.click();
+
 }
 
 </script>
